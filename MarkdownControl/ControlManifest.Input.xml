@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control namespace="Example" constructor="MarkdownControl" version="0.0.1" display-name-key="MarkdownControl" description-key="MarkdownControl description" control-type="standard">
+    <external-service-usage enabled="false">
+    </external-service-usage>
+    <property name="markdownText" display-name-key="markdown_text" of-type="Multiple" usage="bound" required="true">
+
+    </property>
+    <resources>
+      <code path="index.ts" order="1" />
+      <css path="style.css" order="2" />
+    </resources>
+  </control>
+</manifest>
