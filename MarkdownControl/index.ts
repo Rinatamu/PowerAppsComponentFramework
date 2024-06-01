@@ -1,5 +1,6 @@
 import {IInputs, IOutputs} from "./generated/ManifestTypes";
 import {marked} from "marked";
+
 declare const MathJax: any;
 
 export class MarkdownControl implements ComponentFramework.StandardControl<IInputs, IOutputs> {
