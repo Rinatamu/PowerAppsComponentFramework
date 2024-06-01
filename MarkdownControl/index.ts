@@ -1,5 +1,7 @@
 import {IInputs, IOutputs} from "./generated/ManifestTypes";
 import {marked} from "marked";
+declare const MathJax: any;
+
 export class MarkdownControl implements ComponentFramework.StandardControl<IInputs, IOutputs> {
     private _container: HTMLDivElement;
     private _markdownContainer: HTMLDivElement;
@@ -20,6 +22,15 @@ export class MarkdownControl implements ComponentFramework.StandardControl<IInpu
         this._container.appendChild(this._markdownContainer);
         container.appendChild(this._container);
 
+        const mathjaxScript = document.createElement("script");
+        mathjaxScript.src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.1.4/es5/tex-chtml.js";
+        mathjaxScript.onload = () => {
+            MathJax.init({
+                loader: { load: ['input/tex', 'output/chtml'] }
+            });
+        };
+        document.head.appendChild(mathjaxScript);
+
     }
 
     public async updateView(context: ComponentFramework.Context<IInputs>): Promise<void> {
@@ -27,7 +38,17 @@ export class MarkdownControl implements ComponentFramework.StandardControl<IInpu
             this._value = context.parameters.markdownText.raw;
             const markedValue = await marked(this._value);
             this._markdownContainer.innerHTML = markedValue;
+
+            // Render MathJax
+            await MathJax.typesetPromise([this._markdownContainer]);
+
         }
+    }
+
+    public getOutputs(): IOutputs {
+        return {
+            markdownText: this._value
+        };
     }
 
     public destroy(): void {
